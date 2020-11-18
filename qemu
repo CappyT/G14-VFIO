@@ -1,0 +1,45 @@
+#!/bin/bash
+
+if [[ $1 == "win10" ]] && [[ $2 == "prepare" || $2 == "release" || $2 == "started" ]]
+then
+  if [[ $2 == "prepare" ]]
+  then
+    # free some memory before
+    echo 3 > /proc/sys/vm/drop_caches
+    echo 1 > /proc/sys/vm/compact_memory
+
+    # chmod shm file
+    chmod 666 /dev/shm/looking-glass
+
+    # unmount /boot (needs to be accessed from windows)
+    umount /boot
+
+    # remove nvidia gpu from system
+    tee /sys/bus/pci/devices/0000\:01\:00.0/remove <<<1
+    tee /sys/bus/pci/devices/0000\:01\:00.1/remove <<<1
+    tee /sys/bus/pci/devices/0000\:01\:00.2/remove <<<1
+    tee /sys/bus/pci/devices/0000\:01\:00.3/remove <<<1
+
+    # add nvidia gpu back to the system
+    tee /sys/bus/pci/rescan <<<1
+
+    # bind nvidia gpu to VFIO driver
+    /usr/local/bin/vfio-pci-bind 10de:1f12
+    
+    sleep 1
+  elif [[ $2 == "release" ]]
+  then
+    # remove nvidia gpu from system
+    tee /sys/bus/pci/devices/0000\:01\:00.0/remove <<<1
+    tee /sys/bus/pci/devices/0000\:01\:00.1/remove <<<1
+    tee /sys/bus/pci/devices/0000\:01\:00.2/remove <<<1
+    tee /sys/bus/pci/devices/0000\:01\:00.3/remove <<<1
+
+    # give /boot back to the system
+    mount /dev/nvme0n1p1 /boot
+  elif [[ $2 == "started" ]]
+  then
+    # chmod shm file
+    chmod 666 /dev/shm/looking-glass
+  fi
+fi
