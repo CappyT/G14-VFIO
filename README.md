@@ -23,7 +23,7 @@ On arch linux a [bug](https://bugs.archlinux.org/task/67921) makes you unable to
 
 You may still need to follow common guides for VFIO like you do on Desktops. Archwiki has a great guide you can follow to setup everything.
 In this laptop particular case, the things you wanna watch out are these:
-* You need to emulate a battery in the guest (using SSDT.bin) and hide virtualization flags
+* You need to emulate a battery in the guest (using [SSDT.bin](../master/SSDT.bin)) and hide virtualization flags
 * You need a dummy display over type-c (or a real one, if you prefer) as nvidia drivers NEED a screen attached in order to work. (without it looking glass won't work)
 * You should note that the type-c port on the left is the one attached to the nvidia card. If you attach anything to it, the qemu script may have problems detaching it from your host.
 * You may need a script to bind the nvidia graphics card to the VFIO driver. I used [this one](https://github.com/andre-richter/vfio-pci-bind)
@@ -31,7 +31,7 @@ In this laptop particular case, the things you wanna watch out are these:
 * For lowest power consumption (5-8W) you may need to set your graphic mode to "integrated" using [asus-nb-ctrl](https://gitlab.com/asus-linux/asus-nb-ctrl)
 * You may need [looking-glass](https://github.com/gnif/LookingGlass) with a dummy type-c plug or an external monitor (with type-c or type-c adapter) to see display output [CAUTION! If you connect a type-c monitor with charging capabilities and the power brick YOU WILL FRY THE MOTHERBOARD](https://www.reddit.com/r/ZephyrusG14/comments/inrdx3/usbc_power_delivery_power_adapter_issue/)
 * You may need [scream](https://github.com/duncanthrax/scream) for audio passthrough. There are alternatives, but this is the one that works better.
-* You may need to map your keys for switching keyboard grab in [looking-glass-client.ini](../blob/master/looking-glass-client.ini) as I used printscr. Others may want to use other keys.
+* You may need to map your keys for switching keyboard grab in [looking-glass-client.ini](../master/looking-glass-client.ini) as I used printscr. Others may want to use other keys.
 * Have a serious look at [asus-linux website](https://asus-linux.org/) as it cotains a ton of useful features and guides (and links to their discord too) for getting started with linux on ASUS laptops.
 
 
